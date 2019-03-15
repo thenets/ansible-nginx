@@ -1,5 +1,29 @@
 ---
 
+# Create secret files
+- name: create Nginx passwd dir '/etc/nginx/passwd'
+  file:
+    path: /etc/nginx/passwd
+    state: directory
+    mode: 0755
+
+- name: delete each keychain file if exist
+  file:
+    path: /etc/nginx/passwd/{{item.keychain}}
+    state: absent
+  loop: "{{auth}}"
+
+- name: create secret files '/etc/nginx/passwd/<keychain_name>'
+  htpasswd:
+    path: "/etc/nginx/passwd/{{item.keychain}}"
+    name: "{{item.user}}"
+    password: "{{item.pass}}"
+    owner: root
+    group: www-data
+    mode: 0640
+  loop: "{{auth}}"
+
+# Create each site config file
 - name: delete nginx 'sites-enable' config dir
   file:
     path: /etc/nginx/sites-enabled/

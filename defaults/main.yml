@@ -8,6 +8,9 @@ acme_cert_name: "thenets"
 # Nginx
 loadbalancer_sites: []
 
+# Auth
+auth: []
+
 # goaccess
 goaccess:
   user: ""

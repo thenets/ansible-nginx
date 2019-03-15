@@ -18,7 +18,13 @@ server {
         # Log
         access_log /var/log/nginx/{{item.domain}}-access.log;
         error_log  /var/log/nginx/{{item.domain}}-error.log;
-        
+
+{% if item.auth_keychain is defined %}
+        # HTTP basic auth
+        auth_basic           "Auth for {{item.domain}}";
+        auth_basic_user_file /etc/nginx/passwd/{{item.auth_keychain}}; 
+{% endif %}
+
         # Recreate header
         proxy_set_header        Host $host;
         proxy_set_header        X-Real-IP $remote_addr;
