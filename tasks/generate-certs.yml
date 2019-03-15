@@ -1,6 +1,5 @@
 ---
 # Generate renew cert file
-
 - name: create '/opt/certbot-update.sh'
   template:
     src: certbot-update.sh.j2
@@ -14,3 +13,10 @@
 
 - name: update certificates
   shell: /opt/certbot-update.sh
+
+# Set cron to auto-renew
+- name: create auto-renew job
+  cron:
+    name: "nginx certificates auto-renew"
+    special_time: weekly
+    job: 'certbot renew --pre-hook "service nginx stop" --post-hook "service nginx start"'

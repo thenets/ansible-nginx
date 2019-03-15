@@ -44,7 +44,7 @@
 
 - name: create nginx site config
   template:
-    src: nginx/"{{ item.template | default('default') }}".conf.j2
+    src: "nginx/{{ item.template | default('default') }}.conf.j2"
     dest: "/etc/nginx/sites-enabled/{{item.domain}}"
   loop: "{{loadbalancer_sites}}"
   notify: reload nginx
