@@ -37,14 +37,14 @@
     mode: 0755
     state: directory
 
-- name: create default nginx config
+- name: create 'not found' nginx config
   template:
-    src: nginx-default.conf.j2
-    dest: "/etc/nginx/sites-enabled/default"
+    src: nginx/notfound.conf.j2
+    dest: "/etc/nginx/sites-enabled/notfound"
 
 - name: create nginx site config
   template:
-    src: "{{ item.template | default('nginx-site.conf.j2') }}"
+    src: nginx/"{{ item.template | default('default') }}".conf.j2
     dest: "/etc/nginx/sites-enabled/{{item.domain}}"
   loop: "{{loadbalancer_sites}}"
   notify: reload nginx

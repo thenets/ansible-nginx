@@ -15,8 +15,11 @@ server {
 {% endif %}
 
     location / {
-        auth_basic           "goaccess : nginx real-time report";
-        auth_basic_user_file /etc/nginx/passwd/goaccess; 
+{% if item.auth_keychain is defined %}
+        # HTTP basic auth
+        auth_basic           "Auth for {{item.domain}}";
+        auth_basic_user_file /etc/nginx/passwd/{{item.auth_keychain}}; 
+{% endif %}
 
         root	/var/www/goaccess;
         index	report.html;

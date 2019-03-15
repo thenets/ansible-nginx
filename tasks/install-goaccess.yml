@@ -37,21 +37,6 @@
     state: latest
 
 # Setup goaccess
-- name: create Nginx passwd dir '/etc/nginx/passwd'
-  file:
-    path: /etc/nginx/passwd
-    state: directory
-    mode: 0755
-
-- name: create goaccess pass file '/etc/nginx/passwd/goaccess'
-  htpasswd:
-    path: /etc/nginx/passwd/goaccess
-    name: "{{goaccess.user}}"
-    password: "{{goaccess.pass}}"
-    owner: root
-    group: www-data
-    mode: 0640
-
 - name: create report dir '/var/www/goaccess/'
   file:
     path: /var/www/goaccess/
@@ -60,13 +45,13 @@
 
 - name: create '/etc/systemd/system/goaccess.service'
   template:
-    src: goaccess.service.j2
+    src: goaccess/goaccess.service.j2
     dest: "/etc/systemd/system/goaccess.service"
     mode: '0700'
 
 - name: create '/etc/goaccess.conf'
   template:
-    src: goaccess.conf.j2
+    src: goaccess/goaccess.conf.j2
     dest: "/etc/goaccess.conf"
     mode: '0700'
 
