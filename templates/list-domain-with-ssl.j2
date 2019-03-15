@@ -1,0 +1,2 @@
+{% for site in loadbalancer_sites %}{% if site.ssl is defined %}{{site.domain}}
+{% endif %}{% endfor %}

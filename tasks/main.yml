@@ -1,0 +1,20 @@
+---
+# Install Nginx
+- include_tasks: install-nginx.yml
+
+# Install Certbot
+- include_tasks: install-certbot.yml
+
+# Generate certificates
+- include_tasks: generate-certs.yml
+  when: acme_email != ""
+
+# Setup Nginx sites
+- include_tasks: setup-nginx.yml
+
+# Install goaccess
+- include_tasks: install-goaccess.yml
+  when:
+   - goaccess.user != ""
+   - goaccess.pass != ""
+  notify: reload nginx

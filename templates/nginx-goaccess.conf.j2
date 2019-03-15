@@ -1,0 +1,25 @@
+server {
+    listen 80;
+
+    server_name {{item.domain}};
+
+{% if item.ssl is defined %}
+    # Let's Encrypt
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{acme_cert_name}}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{acme_cert_name}}/privkey.pem;
+    #include /etc/letsencrypt/options-ssl-nginx.conf;
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    }
+{% endif %}
+
+    location / {
+        auth_basic           "goaccess : nginx real-time report";
+        auth_basic_user_file /etc/nginx/passwd/goaccess; 
+
+        root	/var/www/goaccess;
+        index	report.html;
+    }
+
+}

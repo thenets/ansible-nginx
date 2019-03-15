@@ -1,0 +1,26 @@
+---
+
+- name: delete nginx 'sites-enable' config dir
+  file:
+    path: /etc/nginx/sites-enabled/
+    state: absent
+
+- name: recreate nginx 'sites-enable' config dir
+  file:
+    path: /etc/nginx/sites-enabled/
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: create default nginx config
+  template:
+    src: nginx-default.conf.j2
+    dest: "/etc/nginx/sites-enabled/default"
+
+- name: create nginx site config
+  template:
+    src: "{{ item.template | default('nginx-site.conf.j2') }}"
+    dest: "/etc/nginx/sites-enabled/{{item.domain}}"
+  loop: "{{loadbalancer_sites}}"
+  notify: reload nginx

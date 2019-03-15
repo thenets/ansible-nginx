@@ -1,0 +1,11 @@
+[Unit]
+Description=goaccess for Nginx
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/bin/env bash -c "goaccess /var/log/nginx/*access.log -o /var/www/goaccess/report.html --real-time-html --port {{goaccess.port}}"
+

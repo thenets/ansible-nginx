@@ -1,0 +1,15 @@
+---
+# defaults file for thenets.loadbalancer
+
+# Let's Encrypt
+acme_email: ""
+acme_cert_name: "thenets"
+
+# Nginx
+loadbalancer_sites: []
+
+# goaccess
+goaccess:
+  user: ""
+  pass: ""
+  port: "3030"

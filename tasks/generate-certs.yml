@@ -1,0 +1,16 @@
+---
+# Generate renew cert file
+
+- name: create '/opt/certbot-update.sh'
+  template:
+    src: certbot-update.sh.j2
+    dest: "/opt/certbot-update.sh"
+    mode: '0700'
+
+- name: create '/etc/letsencrypt/list-domain-with-ssl'
+  template:
+    src: list-domain-with-ssl.j2
+    dest: "/etc/letsencrypt/list-domain-with-ssl"
+
+- name: update certificates
+  shell: /opt/certbot-update.sh

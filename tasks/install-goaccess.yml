@@ -1,0 +1,77 @@
+---
+
+# Install required system packages
+- name: add goaccess repository
+  apt_repository:
+    repo: "deb http://deb.goaccess.io/ {{ansible_lsb.codename}} main"
+    state: present
+    filename: goaccess
+
+- name: add goaccess repository key
+  apt_key:
+    url: https://deb.goaccess.io/gnugpg.key
+    state: present
+
+- name: install goaccess
+  apt: 
+    name: goaccess
+    state: latest
+    update_cache: yes
+
+- name: install apache2-utils
+  apt: 
+    name: apache2-utils
+    state: present
+    update_cache: yes
+
+# Install Ansible requirements packages
+- name: install pip
+  apt: 
+    name: python-pip
+    state: present
+    update_cache: yes
+
+- name: (pip) install passlib for Ansible integration
+  pip:
+    name: passlib
+    state: latest
+
+# Setup goaccess
+- name: create Nginx passwd dir '/etc/nginx/passwd'
+  file:
+    path: /etc/nginx/passwd
+    state: directory
+    mode: 0755
+
+- name: create goaccess pass file '/etc/nginx/passwd/goaccess'
+  htpasswd:
+    path: /etc/nginx/passwd/goaccess
+    name: "{{goaccess.user}}"
+    password: "{{goaccess.pass}}"
+    owner: root
+    group: www-data
+    mode: 0640
+
+- name: create report dir '/var/www/goaccess/'
+  file:
+    path: /var/www/goaccess/
+    state: directory
+    mode: 0755
+
+- name: create '/etc/systemd/system/goaccess.service'
+  template:
+    src: goaccess.service.j2
+    dest: "/etc/systemd/system/goaccess.service"
+    mode: '0700'
+
+- name: create '/etc/goaccess.conf'
+  template:
+    src: goaccess.conf.j2
+    dest: "/etc/goaccess.conf"
+    mode: '0700'
+
+- name: start/restart goaccess service
+  systemd:
+    name: goaccess
+    state: restarted
+    daemon_reload: true
