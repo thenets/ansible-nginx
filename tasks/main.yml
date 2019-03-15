@@ -14,7 +14,4 @@
 
 # Install goaccess
 - include_tasks: install-goaccess.yml
-  when:
-   - goaccess.user != ""
-   - goaccess.pass != ""
   notify: reload nginx
