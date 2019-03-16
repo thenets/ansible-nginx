@@ -1,0 +1,47 @@
+---
+- name: apt-get update
+  apt:
+    update_cache: yes
+
+- name: install build-essential
+  apt:
+    name: build-essential
+    state: latest
+
+- name: install zlib1g-dev
+  apt:
+    name: zlib1g-dev
+    state: latest
+
+- name: install libpcre3
+  apt:
+    name: libpcre3
+    state: latest
+
+- name: install libpcre3-dev
+  apt:
+    name: libpcre3-dev
+    state: latest
+
+- name: install unzip
+  apt:
+    name: unzip
+    state: latest
+
+- name: install uuid-dev
+  apt:
+    name: uuid-dev
+    state: latest
+
+# I know that is not correct use 'shell' or 'bash' commands
+# in the Ansible roles. But in the PageSpeed docs does exist
+# only this way to install it with pre-build packages.
+#
+# The source installation needs to build the Nginx plugin
+# and install many other system packages.
+#
+# For more info:
+# https://www.modpagespeed.com/doc/build_ngx_pagespeed_from_source
+
+- name: automated PageSpeed install
+  shell: bash <(curl -f -L -sS https://ngxpagespeed.com/install) --nginx-version latest

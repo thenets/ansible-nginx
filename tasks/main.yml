@@ -5,6 +5,10 @@
 # Install Certbot
 - include_tasks: install-certbot.yml
 
+# Install PageSpeed
+- include_tasks: install-pagespeed.yml
+  when: install_pagespeed
+
 # Generate certificates
 - include_tasks: generate-certs.yml
   when: acme_email != ""

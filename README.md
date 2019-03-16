@@ -1,4 +1,4 @@
-# role-nginx
+# ansible-nginx
 
 Ansible role for Nginx + Steroids.
 
