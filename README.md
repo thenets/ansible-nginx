@@ -1,4 +1,4 @@
-# ansible-nginx
+# Ansible thenets.nginx
 
 Ansible role for Nginx + Steroids.
 
@@ -15,7 +15,11 @@ This role was tested only in the Ubuntu 18.04. Maybe it works in other Ubuntu an
 
 - Ubuntu 18.04
 
-## Playbook
+## Role Variables
+
+TODO.
+
+## Example Playbook
 
 Example of how to use:
 
@@ -89,3 +93,13 @@ Example of how to use:
           gzip off;
           add_header X-Robots-Tag "noindex, follow" always;
 ```
+
+## License
+
+MIT
+
+## Author Information
+
+If you have any question contact me at IRC Freenode at #thenets-opensource channel.
+
+Or check my other contact info at https://www.thenets.org/contact .
