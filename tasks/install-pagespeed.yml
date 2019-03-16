@@ -4,20 +4,20 @@
 
 - name: apt-get update
   apt:
-    update_cache: yes
+    update_cache: true
 
 - name: install base packages
   apt:
     name: "{{item}}"
     state: installed
   with_items:
-       - nginx
-       - unzip
-       - gcc
-       - make
-       - libpcre3-dev
-       - zlib1g-dev
-       - uuid-dev
+    - nginx
+    - unzip
+    - gcc
+    - make
+    - libpcre3-dev
+    - zlib1g-dev
+    - uuid-dev
 
 - name: check nginx version compatibility
   shell: /usr/sbin/nginx -v 2>&1
@@ -36,7 +36,7 @@
   unarchive:
     src: "https://github.com/pagespeed/ngx_pagespeed/archive/v{{ google_pagespeed_version }}.zip"
     dest: /tmp
-    remote_src: yes
+    remote_src: true
 
 - name: download and unarchive google pagespeed
   shell: "cd /tmp/incubator-pagespeed-ngx-{{ google_pagespeed_version }} &&
@@ -50,24 +50,24 @@
     chdir: "/tmp/nginx-{{ nginxVersion }}"
 
 - name: copy extension to nginx modules
-  copy: 
+  copy:
     remote_src: true
     src: "/tmp/nginx-{{ nginxVersion }}/objs/ngx_pagespeed.so"
     dest: "/etc/nginx/modules/ngx_pagespeed.so"
 
 - name: enable extension
-  file: 
-    src: /etc/nginx/modules/ngx_pagespeed.so 
-    dest: /etc/nginx/modules-available/ngx_pagespeed.so 
+  file:
+    src: /etc/nginx/modules/ngx_pagespeed.so
+    dest: /etc/nginx/modules-available/ngx_pagespeed.so
     state: link
   notify: restart nginx
 
 - name: remove build files
-  file: 
-    path: "/tmp/nginx-{{ nginxVersion }}" 
+  file:
+    path: "/tmp/nginx-{{ nginxVersion }}"
     state: absent
 
 - name: remove build files
-  file: 
-    path: "/tmp/incubator-pagespeed-ngx-{{ google_pagespeed_version }}" 
+  file:
+    path: "/tmp/incubator-pagespeed-ngx-{{ google_pagespeed_version }}"
     state: absent

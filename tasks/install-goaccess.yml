@@ -13,23 +13,23 @@
     state: present
 
 - name: install goaccess
-  apt: 
+  apt:
     name: goaccess
     state: latest
-    update_cache: yes
+    update_cache: true
 
 - name: install apache2-utils
-  apt: 
+  apt:
     name: apache2-utils
     state: present
-    update_cache: yes
+    update_cache: true
 
 # Install Ansible requirements packages
 - name: install pip
-  apt: 
+  apt:
     name: python-pip
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: (pip) install passlib for Ansible integration
   pip:
