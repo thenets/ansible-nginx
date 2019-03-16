@@ -7,6 +7,7 @@ acme_cert_name: "thenets"
 
 # PageSpeed
 install_pagespeed: false
+google_pagespeed_version: 1.13.35.2-stable
 
 # Nginx
 loadbalancer_sites: []

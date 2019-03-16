@@ -1,47 +1,84 @@
 ---
+# Based on "miguelenes" repo:
+# https://github.com/miguelenes/ansible-role-nginx-pagespeed/blob/master/handlers/main.yml
+
 - name: apt-get update
   apt:
     update_cache: yes
 
-- name: install build-essential
+- name: install base packages
   apt:
-    name: build-essential
-    state: latest
+    name: "{{item}}"
+    state: installed
+  with_items:
+       - nginx
+       - unzip
+       - gcc
+       - make
+       - libpcre3-dev
+       - zlib1g-dev
+       - uuid-dev
 
-- name: install zlib1g-dev
-  apt:
-    name: zlib1g-dev
-    state: latest
+- name: check nginx version compatibility
+  shell: /usr/sbin/nginx -v 2>&1
+  register: nginxVersion
 
-- name: install libpcre3
-  apt:
-    name: libpcre3
-    state: latest
+- name: get nginxVersion
+  set_fact:
+    nginxVersion: "{{ nginxVersion.stdout.split('/').1 }}"
 
-- name: install libpcre3-dev
-  apt:
-    name: libpcre3-dev
-    state: latest
+- name: check if PageSpeed is compatible
+  fail:
+    msg: "Cannot install google page speed module without nginx version higher than 1.11.5"
+  when: nginxVersion == "" or {{ nginxVersion | version_compare('1.11.5', '<') }}
 
-- name: install unzip
-  apt:
-    name: unzip
-    state: latest
+- name: download and unarchive nginx
+  unarchive:
+    src: "http://nginx.org/download/nginx-{{ nginxVersion }}.tar.gz"
+    dest: /tmp
+    remote_src: yes
 
-- name: install uuid-dev
-  apt:
-    name: uuid-dev
-    state: latest
+- name: download and unarchive google pagespeed
+  unarchive:
+    src: "https://github.com/pagespeed/ngx_pagespeed/archive/v{{ google_pagespeed_version }}.zip"
+    dest: /tmp
+    remote_src: yes
 
-# I know that is not correct use 'shell' or 'bash' commands
-# in the Ansible roles. But in the PageSpeed docs does exist
-# only this way to install it with pre-build packages.
-#
-# The source installation needs to build the Nginx plugin
-# and install many other system packages.
-#
-# For more info:
-# https://www.modpagespeed.com/doc/build_ngx_pagespeed_from_source
+- name: download and unarchive google pagespeed
+  shell: "cd /tmp/incubator-pagespeed-ngx-{{ google_pagespeed_version }} &&
+          psol_url=https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz
+          [ -e scripts/format_binary_url.sh ] && psol_url=$(scripts/format_binary_url.sh PSOL_BINARY_URL) &&
+           wget ${psol_url} && tar -xzvf $(basename ${psol_url})"
 
-- name: automated PageSpeed install
-  shell: bash <(curl -f -L -sS https://ngxpagespeed.com/install) --nginx-version latest
+- name: configure nginx
+  command: ./configure --add-dynamic-module=../incubator-pagespeed-ngx-{{ google_pagespeed_version }} --with-compat
+  args:
+    chdir: "/tmp/nginx-{{ nginxVersion }}"
+
+- name: build nginx from source
+  command: make modules
+  args:
+    chdir: "/tmp/nginx-{{ nginxVersion }}"
+
+- name: copy extension to nginx modules
+  copy: 
+    remote_src: true
+    src: "/tmp/nginx-{{ nginxVersion }}/objs/ngx_pagespeed.so"
+    dest: "/etc/nginx/modules/ngx_pagespeed.so"
+
+- name: enable extension
+  file: 
+    src: /etc/nginx/modules/ngx_pagespeed.so 
+    dest: /etc/nginx/modules-available/ngx_pagespeed.so 
+    state: link
+  notify: restart nginx
+
+- name: remove build files
+  file: 
+    path: "/tmp/nginx-{{ nginxVersion }}" 
+    state: absent
+
+- name: remove build files
+  file: 
+    path: "/tmp/incubator-pagespeed-ngx-{{ google_pagespeed_version }}" 
+    state: absent
