@@ -4,6 +4,7 @@ server {
     server_name {{item.domain}};
 
 {% if item.server_extra is defined %}
+    # Extra
     {{item.server_extra|indent}}
 {% endif %}
 
@@ -26,6 +27,7 @@ server {
 {% endif %}
 
 {% if item.location_extra is defined %}
+        # Extra
         {{item.location_extra|indent|indent}}
 {% endif %}
 
