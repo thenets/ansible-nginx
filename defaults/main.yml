@@ -5,6 +5,9 @@
 acme_email: ""
 acme_cert_name: "thenets"
 
+# PageSpeed
+install_pagespeed: false
+
 # Nginx
 loadbalancer_sites: []
 
