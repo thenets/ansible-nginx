@@ -26,7 +26,7 @@ server {
 {% endif %}
 
 {% if item.location_extra is defined %}
-        {{item.location_extra|indent}}
+        {{item.location_extra|indent|indent}}
 {% endif %}
 
         root	/var/www/goaccess;

@@ -24,7 +24,7 @@ server {
         error_log  /var/log/nginx/{{item.domain}}-error.log;
 
 {% if item.location_extra is defined %}
-        {{item.location_extra|indent}}
+        {{item.location_extra|indent|indent}}
 {% endif %}
 
 {% if item.auth_keychain is defined %}
