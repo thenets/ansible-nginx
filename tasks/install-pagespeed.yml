@@ -32,12 +32,6 @@
     msg: "Cannot install google page speed module without nginx version higher than 1.11.5"
   when: nginxVersion == "" or {{ nginxVersion | version_compare('1.11.5', '<') }}
 
-- name: download and unarchive nginx
-  unarchive:
-    src: "http://nginx.org/download/nginx-{{ nginxVersion }}.tar.gz"
-    dest: /tmp
-    remote_src: yes
-
 - name: download and unarchive google pagespeed
   unarchive:
     src: "https://github.com/pagespeed/ngx_pagespeed/archive/v{{ google_pagespeed_version }}.zip"
@@ -52,11 +46,6 @@
 
 - name: configure nginx
   command: ./configure --add-dynamic-module=../incubator-pagespeed-ngx-{{ google_pagespeed_version }} --with-compat
-  args:
-    chdir: "/tmp/nginx-{{ nginxVersion }}"
-
-- name: build nginx from source
-  command: make modules
   args:
     chdir: "/tmp/nginx-{{ nginxVersion }}"
 

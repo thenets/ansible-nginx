@@ -9,3 +9,5 @@ RestartSec=1
 User=root
 ExecStart=/usr/bin/env bash -c "goaccess /var/log/nginx/*access.log -o /var/www/goaccess/report.html --real-time-html --port {{goaccess.port}}"
 
+[Install]
+WantedBy=multi-user.target

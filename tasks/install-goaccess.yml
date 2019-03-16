@@ -55,8 +55,9 @@
     dest: "/etc/goaccess.conf"
     mode: '0700'
 
-- name: start/restart goaccess service
+- name: enable and start/restart goaccess service
   systemd:
     name: goaccess
     state: restarted
+    enabled: true
     daemon_reload: true
