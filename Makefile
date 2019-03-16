@@ -6,4 +6,4 @@ create-virtualenv:
 	rm -rf .venv
 	virtualenv -p python3 .venv
 	. .venv/bin/activate && \
-		pip install molecule docker ansible pyOpenSSL
+		pip install molecule docker ansible
