@@ -6,8 +6,15 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
-    image: ubuntu:18.04
+  # - name: centos7
+  #   image: milcom/centos7-systemd
+  #   privileged: true
+  - name: ubuntu18
+    image: solita/ubuntu-systemd
+    command: /sbin/init
+    privileged: true
+    # volumes:
+    #   - /lib/modules:/lib/modules:ro
 provisioner:
   name: ansible
   lint:
