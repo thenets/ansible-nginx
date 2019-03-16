@@ -3,6 +3,10 @@ server {
 
     server_name {{item.domain}};
 
+{% if item.server_extra is defined %}
+    {{item.server_extra|indent}}
+{% endif %}
+
 {% if item.ssl is defined %}
     # Let's Encrypt
     listen 443 ssl;
@@ -19,6 +23,10 @@ server {
         # HTTP basic auth
         auth_basic           "Auth for {{item.domain}}";
         auth_basic_user_file /etc/nginx/passwd/{{item.auth_keychain}}; 
+{% endif %}
+
+{% if item.location_extra is defined %}
+        {{item.location_extra|indent}}
 {% endif %}
 
         root	/var/www/goaccess;

@@ -79,4 +79,13 @@ Example of how to use:
       # Generate real-time report from Nginx logs.
       - domain: "stats.example.com"
         template: "goaccess"
+
+      # Add custom config
+      - domain: "blocked.example.com"
+        proxy_to: "http://{{servers.front-end}}:8080"
+        server_extra: |
+          server_name   anotherblocked.example.com;
+        location_extra: |
+          gzip off;
+          add_header X-Robots-Tag "noindex, follow" always;
 ```
