@@ -4,10 +4,11 @@ Ansible role for Nginx + Steroids.
 
 ## Features
 
-- Proxy to other HTTP server
+- Proxy to the another HTTP server
 - Auto-generate Let's Encrypt certs and auto-renew
 - Create reports using [goaccess](https://github.com/allinurl/goaccess)
 - HTTP basic auth
+- Custom config for each domain/subdomain
 
 ## Requirements
 
@@ -92,6 +93,11 @@ Example of how to use:
         location_extra: |
           gzip off;
           add_header X-Robots-Tag "noindex, follow" always;
+
+      # Simple permanent redirect
+      - domain: "temp.example.com"
+        location_extra: |
+          rewrite ^ https://www.example.com? permanent;
 ```
 
 ## License
