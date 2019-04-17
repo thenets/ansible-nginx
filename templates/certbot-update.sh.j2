@@ -23,7 +23,7 @@ echo ${CURRENT_CHECKSUM} > /etc/letsencrypt/list-domain-with-ssl.md5
 service nginx stop 2>/dev/null
 
 certbot --standalone --non-interactive --agree-tos \
-{% for site in loadbalancer_sites %}{% if site.ssl is defined %}    -d {{site.domain}}  \
-{% endif %}{% endfor %}    -m {{acme_email}} --cert-name {{acme_cert_name}} certonly
+{% for site in loadbalancer_sites %}{% if site.ssl is defined %}{% if site.ssl %}    -d {{site.domain}}  \
+{% endif %}{% endif %}{% endfor %}    -m {{acme_email}} --cert-name {{acme_cert_name}} certonly
 
 service nginx start 2>/dev/null

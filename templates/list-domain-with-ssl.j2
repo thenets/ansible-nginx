@@ -1,2 +1,2 @@
-{% for site in loadbalancer_sites %}{% if site.ssl is defined %}{{site.domain}}
-{% endif %}{% endfor %}
+{% for site in loadbalancer_sites %}{% if site.ssl is defined %}{% if site.ssl %}{{site.domain}}
+{% endif %}{% endif %}{% endfor %}

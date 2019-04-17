@@ -8,7 +8,7 @@ server {
     {{item.server_extra|indent}}
 {% endif %}
 
-{% if item.ssl is defined %}
+{% if item.ssl is defined %}{% if site.ssl %}
     # Let's Encrypt
     listen 443 ssl;
     ssl_certificate /etc/letsencrypt/live/{{acme_cert_name}}/fullchain.pem;
@@ -17,7 +17,7 @@ server {
     if ($scheme != "https") {
         return 301 https://$host$request_uri;
     }
-{% endif %}
+{% endif %}{% endif %}
 
     location / {
         # Log
