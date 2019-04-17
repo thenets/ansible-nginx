@@ -8,5 +8,4 @@ before_install:
 install:
   - pip install molecule docker ansible
 script:
-  - make create-virtualenv
-  - make test
+  - molecule test
