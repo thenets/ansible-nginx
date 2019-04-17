@@ -1,4 +1,10 @@
 ---
+
+# I don't know how to do this for all Ubuntu regions
+# using some Ansible module.
+- name: add Universe repo
+  shell: add-apt-repository universe
+
 - name: install Certbot
   apt:
     name: certbot
