@@ -1,16 +1,16 @@
 ---
 
 # Install required system packages
-- name: add goaccess repository
-  apt_repository:
-    repo: "deb http://deb.goaccess.io/ {{ansible_lsb.codename}} main"
-    state: present
-    filename: goaccess
-
 - name: add goaccess repository key
   apt_key:
     url: https://deb.goaccess.io/gnugpg.key
     state: present
+
+- name: add goaccess repository
+  apt_repository:
+    repo: "deb http://deb.goaccess.io/ {{ ansible_distribution_release|lower }} main"
+    state: present
+    filename: goaccess
 
 - name: install goaccess
   apt:
