@@ -17,6 +17,4 @@ auth: []
 
 # goaccess
 goaccess:
-  user: ""
-  pass: ""
   port: "3030"

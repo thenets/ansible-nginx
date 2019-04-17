@@ -15,6 +15,7 @@ Ansible role for Nginx + Steroids.
 This role was tested only in the Ubuntu 18.04. Maybe it works in other Ubuntu and Debian versions.
 
 - Ubuntu 18.04
+- Open the `goaccess` stream port. (Default: 3030)
 
 ## Role Variables
 
@@ -39,7 +40,7 @@ Example of how to use:
 
     # GoAccess report
     goaccess:
-      port: "5050" # this port must be publicly opened in firewall
+      port: "3030" # this port must be publicly opened in firewall
 
     # HTTP Basic Auth
     auth:
