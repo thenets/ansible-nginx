@@ -18,3 +18,6 @@ auth: []
 # goaccess
 goaccess:
   port: "3030"
+
+# Molecule
+molecule_test: false
