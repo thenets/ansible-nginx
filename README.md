@@ -1,5 +1,7 @@
 # Ansible thenets.nginx
 
+[![Build Status](https://travis-ci.org/thenets/ansible-nginx.svg?branch=master)](https://travis-ci.org/thenets/ansible-nginx) [![CodeFactor](https://www.codefactor.io/repository/github/thenets/ansible-nginx/badge)](https://www.codefactor.io/repository/github/thenets/ansible-nginx)
+
 Ansible role for Nginx + Steroids.
 
 ## Features
