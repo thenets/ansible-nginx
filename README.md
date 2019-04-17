@@ -65,6 +65,11 @@ Example of how to use:
       - domain: "unsecure.example.com"
         proxy_to: "http://{{servers.front-end}}:8080"
 
+      # Simple permanent redirect
+      - domain: "temp.example.com"
+        location_extra: |
+          rewrite ^ https://www.example.com? permanent;
+
       # Proxy using HTTPS
       #
       # The 'https://app.example.com' will proxy to
@@ -94,11 +99,6 @@ Example of how to use:
         location_extra: |
           gzip off;
           add_header X-Robots-Tag "noindex, follow" always;
-
-      # Simple permanent redirect
-      - domain: "temp.example.com"
-        location_extra: |
-          rewrite ^ https://www.example.com? permanent;
 ```
 
 ## License
