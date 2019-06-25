@@ -8,7 +8,7 @@ server {
     {{item.server_extra|indent}}
 {% endif %}
 
-{% if item.ssl is defined %}{% if site.ssl %}
+{% if item.ssl is defined %}{% if item.ssl %}
     # Let's Encrypt
     listen 443 ssl;
     ssl_certificate /etc/letsencrypt/live/{{acme_cert_name}}/fullchain.pem;
